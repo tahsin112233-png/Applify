@@ -5,8 +5,5 @@
   "description": "Free music PWA powered by YouTube",
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "@distube/ytdl-core": "^4.16.10"
   }
 }
