@@ -1,8 +1,8 @@
 {
   "name": "applify",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "Free music PWA powered by YouTube Music",
+  "description": "Free music PWA powered by YouTube",
   "engines": {
     "node": ">=18"
   }
