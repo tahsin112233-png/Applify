@@ -26,7 +26,8 @@
     /* LOADING */
     #loading{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;transition:opacity .7s}
     #loading.gone{opacity:0;pointer-events:none}
-    .ld-icon{width:96px;height:96px;background:linear-gradient(145deg,#fc3c44,#ff2d55);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 0 70px rgba(252,60,68,.55);animation:ldp 1.9s ease-in-out infinite}
+    .ld-icon{width:96px;height:96px;background:linear-gradient(145deg,#fc3c44,#ff2d55);border-radius:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 70px rgba(252,60,68,.55);animation:ldp 1.9s ease-in-out infinite}
+    .ld-icon svg{width:52px;height:52px;fill:#fff}
     @keyframes ldp{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
     .ld-name{font-size:32px;font-weight:800;letter-spacing:-.8px}
     .ld-sub{font-size:13px;color:rgba(255,255,255,.5)}
@@ -43,8 +44,13 @@
     /* HEADERS */
     .phdr{padding:14px 20px 8px;position:sticky;top:0;z-index:20;backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%);background:rgba(0,0,0,.6)}
     .ptitle{font-size:34px;font-weight:800;letter-spacing:-.8px}
-    .home-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding:14px 20px 10px;position:sticky;top:0;z-index:20;backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%);background:rgba(0,0,0,.6)}
-    .greet{font-size:34px;font-weight:800;letter-spacing:-.8px}
+
+    /* HOME HEADER — Logo + Region */
+    .home-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;position:sticky;top:0;z-index:20;backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%);background:rgba(0,0,0,.6)}
+    .app-logo{display:flex;align-items:center;gap:10px}
+    .app-logo-icon{width:38px;height:38px;background:linear-gradient(145deg,#fc3c44,#ff2d55);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(252,60,68,.45);flex-shrink:0}
+    .app-logo-icon svg{width:22px;height:22px;fill:#fff}
+    .app-logo-name{font-size:24px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 60%,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .region-btn{display:flex;align-items:center;gap:6px;background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;padding:7px 13px;font-size:13px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap;-webkit-appearance:none;outline:none;transition:background .15s}
     .region-btn:active{background:rgba(255,255,255,.15)}
 
@@ -226,7 +232,9 @@
 
 <!-- LOADING -->
 <div id="loading">
-  <div class="ld-icon">🎵</div>
+  <div class="ld-icon">
+    <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+  </div>
   <div class="ld-name">Applify</div>
   <div class="ld-sub">Powered by YouTube Music</div>
   <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
@@ -238,7 +246,12 @@
 <!-- HOME -->
 <div id="v-home" class="view active">
   <div class="home-hdr">
-    <div class="greet" id="greet">Good Evening</div>
+    <div class="app-logo">
+      <div class="app-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      </div>
+      <div class="app-logo-name">Applify</div>
+    </div>
     <button class="region-btn" id="region-btn" onclick="openRegionSheet()">
       <span id="rflag">🌏</span>
       <span id="rlabel">BD</span>
@@ -317,13 +330,9 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
     </div>
-
     <div class="np-art-wrap">
-      <div class="np-art" id="np-art">
-        <img id="np-img" src="" alt="">
-      </div>
+      <div class="np-art" id="np-art"><img id="np-img" src="" alt=""></div>
     </div>
-
     <div class="np-meta">
       <div class="np-meta-txt">
         <div class="np-song" id="np-song">—</div>
@@ -333,12 +342,10 @@
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </button>
     </div>
-
     <div id="lrc-panel">
       <div id="lrc-content" class="lrc-empty">No lyrics found</div>
     </div>
     <button class="lrc-btn" id="lrc-btn" onclick="toggleLyrics()">Show Lyrics</button>
-
     <div class="np-pw">
       <div class="np-prog" id="np-prog" onclick="seekClick(event)">
         <div class="np-fill" id="np-fill"></div>
@@ -346,7 +353,6 @@
       </div>
       <div class="np-times"><span id="np-cur">0:00</span><span id="np-dur">0:00</span></div>
     </div>
-
     <div class="np-ctrl">
       <button class="npc sm" id="shuf-btn" onclick="toggleShuffle()">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
@@ -364,7 +370,6 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
       </button>
     </div>
-
     <div class="np-vol">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
       <input type="range" min="0" max="1" step="0.01" value="1" oninput="setVol(this.value)">
@@ -413,73 +418,60 @@
 </div>
 
 <script>
-/* ════════════════════════════════
-   APPLIFY v3 - Full Music PWA
-════════════════════════════════ */
+/* ═══════════════════════════════
+   APPLIFY v3 — Full Music PWA
+═══════════════════════════════ */
 
-// ── AUDIO ENGINE ──
 const audio = new Audio();
 audio.crossOrigin = 'anonymous';
 audio.preload = 'auto';
 
-// ── STATE ──
-let curTrack   = null;
-let queue      = [];
-let qIdx       = -1;
-let isPlaying  = false;
-let isShuffle  = false;
-let isRepeat   = false;
-let showLyrics = false;
-let lrcLines   = [];
-let lastLrcIdx = -1;
-let xfTimer    = null;
+let curTrack=null,queue=[],qIdx=-1,isPlaying=false,isShuffle=false,isRepeat=false;
+let showLyrics=false,lrcLines=[],lastLrcIdx=-1,xfTimer=null;
 
-// ── PERSISTED SETTINGS ──
 const S = {
-  region:    localStorage.getItem('ap_region')   || 'BD',
-  crossfade: localStorage.getItem('ap_xfade')    !== 'false',
-  djStyle:   localStorage.getItem('ap_dj')       !== 'false',
-  xfadeDur:  parseInt(localStorage.getItem('ap_xfdur') || '5'),
-  quality:   localStorage.getItem('ap_quality')  || 'medium',
+  region:   localStorage.getItem('ap_region')  || 'BD',
+  crossfade:localStorage.getItem('ap_xfade')   !== 'false',
+  djStyle:  localStorage.getItem('ap_dj')      !== 'false',
+  xfadeDur: parseInt(localStorage.getItem('ap_xfdur') || '5'),
+  quality:  localStorage.getItem('ap_quality') || 'medium',
 };
-const liked  = new Set(JSON.parse(localStorage.getItem('ap_liked')  || '[]'));
-let   recent = JSON.parse(localStorage.getItem('ap_recent') || '[]');
+const liked = new Set(JSON.parse(localStorage.getItem('ap_liked') || '[]'));
+let recent  = JSON.parse(localStorage.getItem('ap_recent') || '[]');
 
-// ── REGIONS ──
 const REGIONS = [
-  { code:'BD', flag:'🇧🇩', name:'Bangladesh' },
-  { code:'IN', flag:'🇮🇳', name:'India' },
-  { code:'US', flag:'🇺🇸', name:'United States' },
-  { code:'GB', flag:'🇬🇧', name:'United Kingdom' },
-  { code:'PK', flag:'🇵🇰', name:'Pakistan' },
-  { code:'NG', flag:'🇳🇬', name:'Nigeria' },
-  { code:'BR', flag:'🇧🇷', name:'Brazil' },
-  { code:'JP', flag:'🇯🇵', name:'Japan' },
-  { code:'KR', flag:'🇰🇷', name:'South Korea' },
-  { code:'DE', flag:'🇩🇪', name:'Germany' },
-  { code:'FR', flag:'🇫🇷', name:'France' },
-  { code:'CA', flag:'🇨🇦', name:'Canada' },
-  { code:'AU', flag:'🇦🇺', name:'Australia' },
-  { code:'MX', flag:'🇲🇽', name:'Mexico' },
-  { code:'AE', flag:'🇦🇪', name:'UAE' },
+  {code:'BD',flag:'🇧🇩',name:'Bangladesh'},
+  {code:'IN',flag:'🇮🇳',name:'India'},
+  {code:'US',flag:'🇺🇸',name:'United States'},
+  {code:'GB',flag:'🇬🇧',name:'United Kingdom'},
+  {code:'PK',flag:'🇵🇰',name:'Pakistan'},
+  {code:'NG',flag:'🇳🇬',name:'Nigeria'},
+  {code:'BR',flag:'🇧🇷',name:'Brazil'},
+  {code:'JP',flag:'🇯🇵',name:'Japan'},
+  {code:'KR',flag:'🇰🇷',name:'South Korea'},
+  {code:'DE',flag:'🇩🇪',name:'Germany'},
+  {code:'FR',flag:'🇫🇷',name:'France'},
+  {code:'CA',flag:'🇨🇦',name:'Canada'},
+  {code:'AU',flag:'🇦🇺',name:'Australia'},
+  {code:'MX',flag:'🇲🇽',name:'Mexico'},
+  {code:'AE',flag:'🇦🇪',name:'UAE'},
 ];
 
 const CATS = [
-  { n:'Trending',   c:'#fc3c44', e:'📈' },
-  { n:'Pop',        c:'#ff9f0a', e:'✨' },
-  { n:'Hip-Hop',    c:'#5856d6', e:'🎤' },
-  { n:'Rock',       c:'#ff375f', e:'🎸' },
-  { n:'Electronic', c:'#0a84ff', e:'🎛️' },
-  { n:'R&B',        c:'#bf5af2', e:'🎶' },
-  { n:'K-Pop',      c:'#ff6b9d', e:'🌸' },
-  { n:'Bollywood',  c:'#ff9500', e:'🎬' },
-  { n:'Lofi',       c:'#30d158', e:'☕' },
-  { n:'Sad Songs',  c:'#636366', e:'🌧️' },
+  {n:'Trending',  c:'#fc3c44',e:'📈'},
+  {n:'Pop',       c:'#ff9f0a',e:'✨'},
+  {n:'Hip-Hop',   c:'#5856d6',e:'🎤'},
+  {n:'Rock',      c:'#ff375f',e:'🎸'},
+  {n:'Electronic',c:'#0a84ff',e:'🎛️'},
+  {n:'R&B',       c:'#bf5af2',e:'🎶'},
+  {n:'K-Pop',     c:'#ff6b9d',e:'🌸'},
+  {n:'Bollywood', c:'#ff9500',e:'🎬'},
+  {n:'Lofi',      c:'#30d158',e:'☕'},
+  {n:'Sad Songs', c:'#636366',e:'🌧️'},
 ];
 
 // ── INIT ──
 window.addEventListener('load', async () => {
-  setGreeting();
   applyRegion();
   buildCats();
   buildSettings();
@@ -487,7 +479,6 @@ window.addEventListener('load', async () => {
   await loadHome();
   setTimeout(() => document.getElementById('loading').classList.add('gone'), 1000);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
-
   const inp = document.getElementById('s-inp');
   let sTimer;
   inp.addEventListener('input', () => {
@@ -497,42 +488,28 @@ window.addEventListener('load', async () => {
     if (!q) { showCats(); return; }
     sTimer = setTimeout(() => doSearch(q), 500);
   });
-  inp.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { inp.blur(); doSearch(inp.value.trim()); }
-  });
+  inp.addEventListener('keydown', e => { if(e.key==='Enter'){inp.blur();doSearch(inp.value.trim());} });
 });
-
-function setGreeting() {
-  const h = new Date().getHours();
-  document.getElementById('greet').textContent =
-    h < 5 ? 'Good Night' : h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
-}
 
 // ── REGION ──
 function applyRegion() {
-  const r = REGIONS.find(x => x.code === S.region) || REGIONS[0];
+  const r = REGIONS.find(x=>x.code===S.region)||REGIONS[0];
   document.getElementById('rflag').textContent  = r.flag;
   document.getElementById('rlabel').textContent = r.code;
   const sv = document.getElementById('s-region-val');
-  if (sv) sv.textContent = r.name;
+  if(sv) sv.textContent = r.name;
 }
-
 function openRegionSheet() {
-  const list = document.getElementById('region-list');
-  list.innerHTML = REGIONS.map(r => `
+  document.getElementById('region-list').innerHTML = REGIONS.map(r=>`
     <div class="sh-item ${r.code===S.region?'sel':''}" onclick="pickRegion('${r.code}')">
       <div class="sh-dot ${r.code===S.region?'on':''}">
         ${r.code===S.region?'<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6 9 17l-5-5"/></svg>':''}
       </div>
       <span style="font-size:22px">${r.flag}</span>
-      <div>
-        <div style="font-size:15px;font-weight:500">${r.name}</div>
-        <div style="font-size:12px;color:var(--txt2)">${r.code}</div>
-      </div>
+      <div><div style="font-size:15px;font-weight:500">${r.name}</div><div style="font-size:12px;color:var(--txt2)">${r.code}</div></div>
     </div>`).join('');
   openSheet('region-sheet');
 }
-
 function pickRegion(code) {
   S.region = code;
   localStorage.setItem('ap_region', code);
@@ -545,11 +522,11 @@ function pickRegion(code) {
 
 // ── TABS ──
 function goTab(name, btn) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
-  document.getElementById('v-' + name).classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('v-'+name).classList.add('active');
   btn.classList.add('on');
-  if (name === 'search') setTimeout(() => document.getElementById('s-inp').focus(), 200);
+  if(name==='search') setTimeout(()=>document.getElementById('s-inp').focus(),200);
 }
 
 // ── HOME ──
@@ -560,47 +537,33 @@ async function loadHome() {
     <div style="padding:0 4px 12px;font-size:21px;font-weight:700">Quick Picks</div>
     <div class="qp-grid">${[1,2,3,4,5,6,7,8].map(()=>`
       <div class="qp"><div class="qp-img sk"></div><div class="sk" style="height:14px;flex:1;border-radius:7px"></div></div>`).join('')}
-    </div>
-  </div>`;
-
+    </div></div>`;
   try {
     const r = await fetch(`/api/home?region=${S.region}`);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if(!r.ok) throw new Error('HTTP '+r.status);
     const d = await r.json();
-    if (!d.sections?.length) throw new Error('No data');
-    const allItems = d.sections.flatMap(s => s.items || []).filter(t => t.id);
-    if (allItems.length) queue = allItems;
+    if(!d.sections?.length) throw new Error('No data');
+    const all = d.sections.flatMap(s=>s.items||[]).filter(t=>t.id);
+    if(all.length) queue = all;
     el.innerHTML = buildHome(d.sections);
   } catch(err) {
-    console.error('[home]', err.message);
     el.innerHTML = `<div style="padding:60px 28px;text-align:center;color:var(--txt2)">
       <div style="font-size:48px;margin-bottom:14px">⚠️</div>
       <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px">Couldn't load feed</div>
-      <div style="font-size:14px;line-height:1.6;margin-bottom:20px">${esc(err.message)}</div>
-      <div style="font-size:13px;background:rgba(255,255,255,.07);border-radius:12px;padding:14px;text-align:left">
-        <b>Make sure you've set YT_API_KEY in Vercel:</b><br>
-        1. vercel.com → your project<br>
-        2. Settings → Environment Variables<br>
-        3. Add: YT_API_KEY = your key<br>
-        4. Redeploy
-      </div>
+      <div style="font-size:14px">${esc(err.message)}</div>
     </div>`;
   }
 }
 
 function buildHome(sections) {
-  const r = REGIONS.find(x=>x.code===S.region) || REGIONS[0];
-  let html = '';
-  let heroSet = false;
-
-  sections.forEach((sec, i) => {
-    if (!sec.items?.length) return;
+  const r = REGIONS.find(x=>x.code===S.region)||REGIONS[0];
+  let html='', heroSet=false;
+  sections.forEach((sec,i)=>{
+    if(!sec.items?.length) return;
     const items = sec.items;
-
-    // Hero from first item of first section
-    if (!heroSet) {
-      const f = items[0];
-      html += `<div class="hero" onclick='play(${enc(f)})'>
+    if(!heroSet) {
+      const f=items[0];
+      html+=`<div class="hero" onclick='play(${enc(f)})'>
         <img src="${esc(f.thumb)}" alt="" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%231c1c1e%22 width=%22400%22 height=%22300%22/></svg>'">
         <div class="hero-body">
           <div class="hero-lbl">${r.flag} ${esc(sec.title)}</div>
@@ -609,537 +572,365 @@ function buildHome(sections) {
         </div>
         <div class="hero-play">▶</div>
       </div>`;
-      heroSet = true;
+      heroSet=true;
     }
-
-    // Quick Picks grid from first section
-    if (i === 0 && items.length >= 4) {
-      html += `<div class="sec">
-        <div class="sec-hdr"><div class="sec-ttl">Quick Picks</div></div>
-        <div class="qp-grid">${items.slice(0,8).map(t=>qpCard(t)).join('')}</div>
-      </div>`;
+    if(i===0&&items.length>=4) {
+      html+=`<div class="sec"><div class="sec-hdr"><div class="sec-ttl">Quick Picks</div></div>
+        <div class="qp-grid">${items.slice(0,8).map(t=>qpCard(t)).join('')}</div></div>`;
     }
-
-    // Carousel sections
-    if (i >= 1) {
-      html += `<div class="sec">
-        <div class="sec-hdr">
-          <div class="sec-ttl">${esc(sec.title)}</div>
-          <div class="sec-all">See All</div>
-        </div>
-        ${items.length > 5
-          ? `<div class="hs">${items.map(t=>sCard(t)).join('')}</div>`
-          : items.map((t,j)=>liItem(t,j+1)).join('')
-        }
+    if(i>=1) {
+      html+=`<div class="sec"><div class="sec-hdr"><div class="sec-ttl">${esc(sec.title)}</div><div class="sec-all">See All</div></div>
+        ${items.length>5?`<div class="hs">${items.map(t=>sCard(t)).join('')}</div>`:items.map((t,j)=>liItem(t,j+1)).join('')}
       </div>`;
     }
   });
-  return html || '<div style="padding:40px;text-align:center;color:var(--txt2)">No content</div>';
+  return html||'<div style="padding:40px;text-align:center;color:var(--txt2)">No content</div>';
 }
 
-function sCard(t) {
-  return `<div class="scard" onclick='play(${enc(t)})'>
-    <div class="scard-art">
-      <img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'">
-      <div class="scard-ov"><svg width="44" height="44" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
-    </div>
-    <div class="scard-ttl">${esc(t.title)}</div>
-    <div class="scard-sub">${esc(t.artist)}</div>
-  </div>`;
-}
-function qpCard(t) {
-  return `<div class="qp" onclick='play(${enc(t)})'>
-    <div class="qp-img"><img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"></div>
-    <div class="qp-name">${esc(t.title)}</div>
-  </div>`;
-}
-function liItem(t, n) {
-  return `<div class="li" onclick='play(${enc(t)})'>
-    <div class="li-num">${n}</div>
-    <div class="li-img"><img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"></div>
-    <div class="li-info">
-      <div class="li-ttl">${esc(t.title)}</div>
-      <div class="li-sub">${esc(t.artist)}</div>
-    </div>
-    <div class="li-more">···</div>
-  </div>`;
-}
+function sCard(t){return`<div class="scard" onclick='play(${enc(t)})'><div class="scard-art"><img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"><div class="scard-ov"><svg width="44" height="44" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div><div class="scard-ttl">${esc(t.title)}</div><div class="scard-sub">${esc(t.artist)}</div></div>`;}
+function qpCard(t){return`<div class="qp" onclick='play(${enc(t)})'><div class="qp-img"><img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"></div><div class="qp-name">${esc(t.title)}</div></div>`;}
+function liItem(t,n){return`<div class="li" onclick='play(${enc(t)})'><div class="li-num">${n}</div><div class="li-img"><img src="${esc(t.thumb)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"></div><div class="li-info"><div class="li-ttl">${esc(t.title)}</div><div class="li-sub">${esc(t.artist)}</div></div><div class="li-more">···</div></div>`;}
 
 // ── SEARCH ──
-function buildCats() {
-  document.getElementById('cat-grid').innerHTML = CATS.map(c =>
-    `<div class="cat" style="background:linear-gradient(135deg,${c.c},${c.c}99)" onclick="doSearch('${c.n} music')">
-      <span class="cat-em">${c.e}</span>${c.n}
-    </div>`).join('');
-}
-function showCats() {
-  document.getElementById('cat-grid').style.display = 'grid';
-  document.getElementById('s-results').style.display = 'none';
-}
-function clearSearch() {
-  document.getElementById('s-inp').value = '';
-  document.getElementById('s-clr').style.display = 'none';
-  showCats();
-}
+function buildCats(){document.getElementById('cat-grid').innerHTML=CATS.map(c=>`<div class="cat" style="background:linear-gradient(135deg,${c.c},${c.c}99)" onclick="doSearch('${c.n} music')"><span class="cat-em">${c.e}</span>${c.n}</div>`).join('');}
+function showCats(){document.getElementById('cat-grid').style.display='grid';document.getElementById('s-results').style.display='none';}
+function clearSearch(){document.getElementById('s-inp').value='';document.getElementById('s-clr').style.display='none';showCats();}
+
 async function doSearch(q) {
-  if (!q) return;
-  const inp = document.getElementById('s-inp');
-  if (inp.value !== q) { inp.value = q; document.getElementById('s-clr').style.display='block'; }
-  document.getElementById('cat-grid').style.display = 'none';
-  const res = document.getElementById('s-results');
-  res.style.display = 'block';
-  res.innerHTML = `<div style="padding:40px;text-align:center;color:var(--txt2)">
-    <div style="font-size:28px;margin-bottom:10px">🔍</div>
-    Searching for <b>"${esc(q)}"</b>…
-  </div>`;
+  if(!q) return;
+  const inp=document.getElementById('s-inp');
+  if(inp.value!==q){inp.value=q;document.getElementById('s-clr').style.display='block';}
+  document.getElementById('cat-grid').style.display='none';
+  const res=document.getElementById('s-results');
+  res.style.display='block';
+  res.innerHTML=`<div style="padding:40px;text-align:center;color:var(--txt2)"><div style="font-size:28px;margin-bottom:10px">🔍</div>Searching for <b>"${esc(q)}"</b>…</div>`;
   try {
-    const r = await fetch(`/api/search?q=${encodeURIComponent(q)}&region=${S.region}`);
-    if (!r.ok) { const d=await r.json(); throw new Error(d.error||'HTTP '+r.status); }
-    const d = await r.json();
-    if (d.error) throw new Error(d.error);
-    if (!d.results?.length) throw new Error('No results found');
-    queue = d.results; qIdx = -1;
-    res.innerHTML = `<div class="sec-hdr" style="padding-top:8px">
-      <div class="sec-ttl">Results for "${esc(q)}"</div>
-    </div>` + d.results.map((t,i)=>liItem(t,i+1)).join('');
+    const r=await fetch(`/api/search?q=${encodeURIComponent(q)}&region=${S.region}`);
+    if(!r.ok){const d=await r.json();throw new Error(d.error||'HTTP '+r.status);}
+    const d=await r.json();
+    if(d.error) throw new Error(d.error);
+    if(!d.results?.length) throw new Error('No results found');
+    queue=d.results; qIdx=-1;
+    res.innerHTML=`<div class="sec-hdr" style="padding-top:8px"><div class="sec-ttl">Results for "${esc(q)}"</div></div>`+d.results.map((t,i)=>liItem(t,i+1)).join('');
   } catch(err) {
-    res.innerHTML = `<div style="padding:60px 28px;text-align:center;color:var(--txt2)">
-      <div style="font-size:44px;margin-bottom:14px">😔</div>
-      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px">Search failed</div>
-      <div style="font-size:14px">${esc(err.message)}</div>
-    </div>`;
+    res.innerHTML=`<div style="padding:60px 28px;text-align:center;color:var(--txt2)"><div style="font-size:44px;margin-bottom:14px">😔</div><div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px">Search failed</div><div style="font-size:14px">${esc(err.message)}</div></div>`;
   }
 }
 
-// ── PLAYER ──
+// ── PLAYER (uses proxy) ──
 async function play(t) {
-  if (typeof t === 'string') t = JSON.parse(t);
-  curTrack = t;
-  const fi = queue.findIndex(x => x.id === t.id);
-  if (fi >= 0) qIdx = fi; else { queue.unshift(t); qIdx = 0; }
-
+  if(typeof t==='string') t=JSON.parse(t);
+  curTrack=t;
+  const fi=queue.findIndex(x=>x.id===t.id);
+  if(fi>=0) qIdx=fi; else{queue.unshift(t);qIdx=0;}
   updateUI(t);
   showMini();
   setPlayState(false);
   addRecent(t);
   cancelXfade();
-  lrcLines = []; lastLrcIdx = -1;
-  document.getElementById('lrc-content').className = 'lrc-empty';
-  document.getElementById('lrc-content').textContent = 'Loading lyrics…';
+  lrcLines=[];lastLrcIdx=-1;
+  document.getElementById('lrc-content').className='lrc-empty';
+  document.getElementById('lrc-content').textContent='Loading lyrics…';
 
   try {
+    // Verify stream exists first
     const r = await fetch(`/api/stream?videoId=${t.id}`);
-    if (!r.ok) { const d=await r.json(); throw new Error(d.error||'HTTP '+r.status); }
+    if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.error||'HTTP '+r.status);}
     const d = await r.json();
-    if (!d.url) throw new Error('No stream URL returned');
+    if(!d.url) throw new Error('No stream URL');
 
-    audio.src = d.url;
+    // Use proxy for actual playback (solves CORS)
+    audio.src = `/api/proxy?videoId=${t.id}`;
+    audio.type = d.mimeType || 'audio/webm';
     audio.load();
-    const playPromise = audio.play();
-    if (playPromise) await playPromise;
+    await audio.play();
     setPlayState(true);
-    if (S.crossfade) scheduleXfade();
+    if(S.crossfade) scheduleXfade();
     fetchLyrics(t);
   } catch(err) {
-    console.error('[play]', err);
-    toast('⚠️ Cannot load — trying next song');
-    setTimeout(next, 1500);
+    console.error('[play]',err);
+    toast('⚠️ Cannot load — trying next');
+    setTimeout(next,1500);
   }
 }
 
 function updateUI(t) {
-  const th = t.thumb || '';
-  document.getElementById('mini-img').src  = th;
-  document.getElementById('np-img').src    = th;
-  document.getElementById('mini-ttl').textContent  = t.title  || 'Unknown';
-  document.getElementById('mini-art2').textContent = t.artist || '—';
-  document.getElementById('np-song').textContent   = t.title  || 'Unknown';
-  document.getElementById('np-artist').textContent = t.artist || '—';
-  document.getElementById('np-ctx-nm').textContent = t.artist || 'Applify';
-  document.getElementById('np-blur').style.backgroundImage = `url(${th})`;
+  const th=t.thumb||'';
+  document.getElementById('mini-img').src=th;
+  document.getElementById('np-img').src=th;
+  document.getElementById('mini-ttl').textContent=t.title||'Unknown';
+  document.getElementById('mini-art2').textContent=t.artist||'—';
+  document.getElementById('np-song').textContent=t.title||'Unknown';
+  document.getElementById('np-artist').textContent=t.artist||'—';
+  document.getElementById('np-ctx-nm').textContent=t.artist||'Applify';
+  document.getElementById('np-blur').style.backgroundImage=`url(${th})`;
   updateHeart();
-  if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: t.title||'', artist: t.artist||'',
-      artwork: [{ src: th, sizes:'512x512', type:'image/jpeg' }]
-    });
-  }
+  if('mediaSession' in navigator)
+    navigator.mediaSession.metadata=new MediaMetadata({title:t.title||'',artist:t.artist||'',artwork:[{src:th,sizes:'512x512',type:'image/jpeg'}]});
 }
 
-const PI = s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
-const PA = s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+const PI=s=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+const PA=s=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 
-function setPlayState(v) {
-  isPlaying = v;
-  document.getElementById('mini-play').innerHTML = v ? PA(28) : PI(28);
-  document.getElementById('np-play').innerHTML   = v ? PA(38) : PI(38);
-  document.getElementById('np-art').classList.toggle('big', v);
-  if ('mediaSession' in navigator)
-    navigator.mediaSession.playbackState = v ? 'playing' : 'paused';
+function setPlayState(v){
+  isPlaying=v;
+  document.getElementById('mini-play').innerHTML=v?PA(28):PI(28);
+  document.getElementById('np-play').innerHTML=v?PA(38):PI(38);
+  document.getElementById('np-art').classList.toggle('big',v);
+  if('mediaSession' in navigator) navigator.mediaSession.playbackState=v?'playing':'paused';
 }
 
-function togglePlay() {
-  if (!curTrack) return;
-  if (isPlaying) audio.pause();
-  else audio.play().catch(e => { toast('⚠️ ' + e.message); });
-}
-function prev() {
-  if (audio.currentTime > 3) { audio.currentTime=0; return; }
-  if (!queue.length) return;
-  qIdx = (qIdx - 1 + queue.length) % queue.length;
-  play(queue[qIdx]);
-}
-function next() {
-  if (!queue.length) return;
-  cancelXfade();
-  qIdx = isShuffle ? Math.floor(Math.random()*queue.length) : (qIdx+1)%queue.length;
-  play(queue[qIdx]);
-}
-function toggleShuffle() {
-  isShuffle = !isShuffle;
-  document.getElementById('shuf-btn').classList.toggle('on', isShuffle);
-  toast(isShuffle ? '🔀 Shuffle on' : 'Shuffle off');
-}
-function toggleRepeat() {
-  isRepeat = !isRepeat;
-  document.getElementById('rep-btn').classList.toggle('on', isRepeat);
-  toast(isRepeat ? '🔁 Repeat on' : 'Repeat off');
-}
-function setVol(v) { audio.volume = parseFloat(v); }
+function togglePlay(){if(!curTrack)return;if(isPlaying)audio.pause();else audio.play().catch(e=>toast('⚠️ '+e.message));}
+function prev(){if(audio.currentTime>3){audio.currentTime=0;return;}if(!queue.length)return;qIdx=(qIdx-1+queue.length)%queue.length;play(queue[qIdx]);}
+function next(){if(!queue.length)return;cancelXfade();qIdx=isShuffle?Math.floor(Math.random()*queue.length):(qIdx+1)%queue.length;play(queue[qIdx]);}
+function toggleShuffle(){isShuffle=!isShuffle;document.getElementById('shuf-btn').classList.toggle('on',isShuffle);toast(isShuffle?'🔀 Shuffle on':'Shuffle off');}
+function toggleRepeat(){isRepeat=!isRepeat;document.getElementById('rep-btn').classList.toggle('on',isRepeat);toast(isRepeat?'🔁 Repeat on':'Repeat off');}
+function setVol(v){audio.volume=parseFloat(v);}
 
-function toggleLike() {
-  if (!curTrack) return;
-  liked.has(curTrack.id) ? liked.delete(curTrack.id) : liked.add(curTrack.id);
-  localStorage.setItem('ap_liked', JSON.stringify([...liked]));
+function toggleLike(){
+  if(!curTrack)return;
+  liked.has(curTrack.id)?liked.delete(curTrack.id):liked.add(curTrack.id);
+  localStorage.setItem('ap_liked',JSON.stringify([...liked]));
   updateHeart();
-  toast(liked.has(curTrack.id) ? '❤️ Added to favorites' : '💔 Removed');
+  toast(liked.has(curTrack.id)?'❤️ Added to favorites':'💔 Removed');
   renderLibrary();
 }
-function updateHeart() {
-  if (!curTrack) return;
-  const on = liked.has(curTrack.id);
-  const h = document.getElementById('np-heart');
-  h.classList.toggle('on', on);
-  h.innerHTML = on
-    ? `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`
-    : `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+function updateHeart(){
+  if(!curTrack)return;
+  const on=liked.has(curTrack.id);
+  const h=document.getElementById('np-heart');
+  h.classList.toggle('on',on);
+  h.innerHTML=on
+    ?`<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`
+    :`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
 }
 
-function shareTrack() {
-  if (!curTrack) return;
-  const url = `https://music.youtube.com/watch?v=${curTrack.id}`;
-  if (navigator.share) navigator.share({ title: curTrack.title, url }).catch(()=>{});
-  else navigator.clipboard?.writeText(url).then(() => toast('🔗 Link copied!'));
+function shareTrack(){
+  if(!curTrack)return;
+  const url=`https://music.youtube.com/watch?v=${curTrack.id}`;
+  if(navigator.share) navigator.share({title:curTrack.title,url}).catch(()=>{});
+  else navigator.clipboard?.writeText(url).then(()=>toast('🔗 Link copied!'));
 }
-
-function seekClick(e) {
-  const rect = document.getElementById('np-prog').getBoundingClientRect();
-  const r = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  if (audio.duration) audio.currentTime = r * audio.duration;
+function seekClick(e){
+  const rect=document.getElementById('np-prog').getBoundingClientRect();
+  const r=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  if(audio.duration) audio.currentTime=r*audio.duration;
 }
 
 // ── CROSSFADE ──
-function scheduleXfade() {
+function scheduleXfade(){
   cancelXfade();
-  const check = () => {
-    if (!audio.duration || !isPlaying) return;
-    const rem = (audio.duration - audio.currentTime) * 1000;
-    const dur = S.xfadeDur * 1000;
-    if (rem <= dur + 200) startXfade();
-    else xfTimer = setTimeout(check, Math.max(500, rem - dur - 500));
+  const check=()=>{
+    if(!audio.duration||!isPlaying)return;
+    const rem=(audio.duration-audio.currentTime)*1000;
+    const dur=S.xfadeDur*1000;
+    if(rem<=dur+200) startXfade();
+    else xfTimer=setTimeout(check,Math.max(500,rem-dur-500));
   };
-  xfTimer = setTimeout(check, 4000);
+  xfTimer=setTimeout(check,4000);
 }
-function cancelXfade() { clearTimeout(xfTimer); xfTimer = null; }
-function startXfade() {
-  if (!S.crossfade || !queue.length) return;
-  const xft = document.getElementById('xf-toast');
-  xft.textContent = S.djStyle ? '🎛️ DJ Crossfade' : '🎵 Crossfading…';
+function cancelXfade(){clearTimeout(xfTimer);xfTimer=null;}
+function startXfade(){
+  if(!S.crossfade||!queue.length)return;
+  const xft=document.getElementById('xf-toast');
+  xft.textContent=S.djStyle?'🎛️ DJ Crossfade':'🎵 Crossfading…';
   xft.classList.add('in');
-  setTimeout(() => xft.classList.remove('in'), 3500);
-  const steps = 20, dur = S.xfadeDur * 1000;
-  const startVol = audio.volume;
-  let step = 0;
-  const iv = setInterval(() => {
+  setTimeout(()=>xft.classList.remove('in'),3500);
+  const steps=20,dur=S.xfadeDur*1000,startVol=audio.volume;
+  let step=0;
+  const iv=setInterval(()=>{
     step++;
-    const r = step / steps;
-    audio.volume = Math.max(0, startVol * (S.djStyle ? Math.pow(1-r,1.6) : (1-r)));
-    if (step >= steps) { clearInterval(iv); audio.volume = startVol; next(); }
-  }, dur / steps);
+    const r=step/steps;
+    audio.volume=Math.max(0,startVol*(S.djStyle?Math.pow(1-r,1.6):(1-r)));
+    if(step>=steps){clearInterval(iv);audio.volume=startVol;next();}
+  },dur/steps);
 }
 
 // ── AUDIO EVENTS ──
-audio.addEventListener('timeupdate', () => {
-  if (!audio.duration) return;
-  const p = audio.currentTime / audio.duration;
-  const pct = p * 100;
-  document.getElementById('mini-pb-fill').style.width = pct + '%';
-  document.getElementById('np-fill').style.width      = pct + '%';
-  document.getElementById('np-knob').style.left       = pct + '%';
-  document.getElementById('np-cur').textContent = fmt(audio.currentTime);
-  document.getElementById('np-dur').textContent = fmt(audio.duration);
+audio.addEventListener('timeupdate',()=>{
+  if(!audio.duration)return;
+  const p=audio.currentTime/audio.duration;
+  const pct=p*100;
+  document.getElementById('mini-pb-fill').style.width=pct+'%';
+  document.getElementById('np-fill').style.width=pct+'%';
+  document.getElementById('np-knob').style.left=pct+'%';
+  document.getElementById('np-cur').textContent=fmt(audio.currentTime);
+  document.getElementById('np-dur').textContent=fmt(audio.duration);
   highlightLyric(audio.currentTime);
 });
-audio.addEventListener('play',  () => setPlayState(true));
-audio.addEventListener('pause', () => setPlayState(false));
-audio.addEventListener('ended', () => { if (isRepeat) { audio.currentTime=0; audio.play(); } else next(); });
-audio.addEventListener('error', e => { console.error('Audio error',e); toast('⚠️ Playback error — skipping'); setTimeout(next,2000); });
+audio.addEventListener('play',()=>setPlayState(true));
+audio.addEventListener('pause',()=>setPlayState(false));
+audio.addEventListener('ended',()=>{if(isRepeat){audio.currentTime=0;audio.play();}else next();});
+audio.addEventListener('error',e=>{console.error('Audio error',e);toast('⚠️ Playback error — skipping');setTimeout(next,2000);});
 
-if ('mediaSession' in navigator) {
-  navigator.mediaSession.setActionHandler('play',          () => audio.play());
-  navigator.mediaSession.setActionHandler('pause',         () => audio.pause());
-  navigator.mediaSession.setActionHandler('nexttrack',     next);
-  navigator.mediaSession.setActionHandler('previoustrack', prev);
-  navigator.mediaSession.setActionHandler('seekto',        d => { if(audio.duration) audio.currentTime=d.seekTime; });
+if('mediaSession' in navigator){
+  navigator.mediaSession.setActionHandler('play',()=>audio.play());
+  navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
+  navigator.mediaSession.setActionHandler('nexttrack',next);
+  navigator.mediaSession.setActionHandler('previoustrack',prev);
+  navigator.mediaSession.setActionHandler('seekto',d=>{if(audio.duration)audio.currentTime=d.seekTime;});
 }
 
-// ── NOW PLAYING PANEL ──
-function showMini() { document.getElementById('mini').classList.add('show'); }
-function openNP()   { document.getElementById('np').classList.add('open'); }
-function closeNP()  { document.getElementById('np').classList.remove('open'); }
+// ── NOW PLAYING ──
+function showMini(){document.getElementById('mini').classList.add('show');}
+function openNP(){document.getElementById('np').classList.add('open');}
+function closeNP(){document.getElementById('np').classList.remove('open');}
 
 let _ty=0;
-document.getElementById('np').addEventListener('touchstart', e=>{ _ty=e.touches[0].clientY; }, {passive:true});
-document.getElementById('np').addEventListener('touchend',   e=>{ if(e.changedTouches[0].clientY-_ty>90) closeNP(); }, {passive:true});
+document.getElementById('np').addEventListener('touchstart',e=>{_ty=e.touches[0].clientY;},{passive:true});
+document.getElementById('np').addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-_ty>90)closeNP();},{passive:true});
 
 // ── LYRICS ──
-function toggleLyrics() {
-  showLyrics = !showLyrics;
-  document.getElementById('lrc-panel').style.display = showLyrics ? 'block' : 'none';
-  document.getElementById('lrc-btn').textContent = showLyrics ? 'Hide Lyrics' : 'Show Lyrics';
+function toggleLyrics(){
+  showLyrics=!showLyrics;
+  document.getElementById('lrc-panel').style.display=showLyrics?'block':'none';
+  document.getElementById('lrc-btn').textContent=showLyrics?'Hide Lyrics':'Show Lyrics';
 }
-async function fetchLyrics(t) {
-  try {
-    const q = encodeURIComponent(`${t.title} ${t.artist}`);
-    const r = await fetch(`https://lrclib.net/api/search?q=${q}`);
-    if (!r.ok) throw new Error('Not found');
-    const list = await r.json();
-    if (!list?.length) throw new Error('Not found');
-    const best = list.find(x=>x.syncedLyrics) || list[0];
-    if (best?.syncedLyrics) {
-      lrcLines = parseLRC(best.syncedLyrics);
-      document.getElementById('lrc-content').className = '';
-      document.getElementById('lrc-content').innerHTML =
-        lrcLines.map((l,i)=>`<div class="lrc-line" id="lrc-${i}">${esc(l.text)||'♪'}</div>`).join('');
-    } else if (best?.plainLyrics) {
-      document.getElementById('lrc-content').className = '';
-      document.getElementById('lrc-content').innerHTML =
-        best.plainLyrics.split('\n').map(l=>`<div class="lrc-line">${esc(l)||'&nbsp;'}</div>`).join('');
+async function fetchLyrics(t){
+  try{
+    const q=encodeURIComponent(`${t.title} ${t.artist}`);
+    const r=await fetch(`https://lrclib.net/api/search?q=${q}`);
+    if(!r.ok) throw new Error('Not found');
+    const list=await r.json();
+    if(!list?.length) throw new Error('Not found');
+    const best=list.find(x=>x.syncedLyrics)||list[0];
+    if(best?.syncedLyrics){
+      lrcLines=parseLRC(best.syncedLyrics);
+      document.getElementById('lrc-content').className='';
+      document.getElementById('lrc-content').innerHTML=lrcLines.map((l,i)=>`<div class="lrc-line" id="lrc-${i}">${esc(l.text)||'♪'}</div>`).join('');
+    } else if(best?.plainLyrics){
+      document.getElementById('lrc-content').className='';
+      document.getElementById('lrc-content').innerHTML=best.plainLyrics.split('\n').map(l=>`<div class="lrc-line">${esc(l)||'&nbsp;'}</div>`).join('');
     } else throw new Error('Empty');
-  } catch {
-    document.getElementById('lrc-content').className = 'lrc-empty';
-    document.getElementById('lrc-content').textContent = 'No lyrics found';
+  }catch{
+    document.getElementById('lrc-content').className='lrc-empty';
+    document.getElementById('lrc-content').textContent='No lyrics found';
   }
 }
-function parseLRC(lrc) {
-  return lrc.split('\n').map(line=>{
-    const m = line.match(/\[(\d+):(\d+\.?\d*)\](.*)/);
-    if (!m) return null;
-    return { t: parseInt(m[1])*60+parseFloat(m[2]), text: m[3].trim() };
-  }).filter(Boolean);
-}
-function highlightLyric(t) {
-  if (!lrcLines.length) return;
-  let idx = -1;
-  for (let i=0; i<lrcLines.length; i++) { if (lrcLines[i].t <= t) idx=i; else break; }
-  if (idx<0) idx=0;
-  if (idx===lastLrcIdx) return;
-  lastLrcIdx = idx;
+function parseLRC(lrc){return lrc.split('\n').map(line=>{const m=line.match(/\[(\d+):(\d+\.?\d*)\](.*)/);if(!m)return null;return{t:parseInt(m[1])*60+parseFloat(m[2]),text:m[3].trim()};}).filter(Boolean);}
+function highlightLyric(t){
+  if(!lrcLines.length)return;
+  let idx=-1;
+  for(let i=0;i<lrcLines.length;i++){if(lrcLines[i].t<=t)idx=i;else break;}
+  if(idx<0)idx=0;
+  if(idx===lastLrcIdx)return;
+  lastLrcIdx=idx;
   document.querySelectorAll('.lrc-line').forEach((el,i)=>el.classList.toggle('on',i===idx));
   document.getElementById(`lrc-${idx}`)?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 // ── LIBRARY ──
-function addRecent(t) {
-  recent = recent.filter(x=>x.id!==t.id);
-  recent.unshift(t);
-  recent = recent.slice(0,30);
-  localStorage.setItem('ap_recent', JSON.stringify(recent));
-  renderLibrary();
-}
-function renderLibrary() {
-  const el = document.getElementById('lib-body');
-  if (!el) return;
-  if (!recent.length) {
-    el.innerHTML = `<div style="padding:70px 28px;text-align:center;color:var(--txt2)">
-      <div style="font-size:60px;margin-bottom:18px">🎵</div>
-      <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Your Music</div>
-      <div style="font-size:14px;line-height:1.6">Songs you play appear here</div>
-    </div>`; return;
+function addRecent(t){recent=recent.filter(x=>x.id!==t.id);recent.unshift(t);recent=recent.slice(0,30);localStorage.setItem('ap_recent',JSON.stringify(recent));renderLibrary();}
+function renderLibrary(){
+  const el=document.getElementById('lib-body');
+  if(!el)return;
+  if(!recent.length){
+    el.innerHTML=`<div style="padding:70px 28px;text-align:center;color:var(--txt2)"><div style="font-size:60px;margin-bottom:18px">🎵</div><div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Your Music</div><div style="font-size:14px;line-height:1.6">Songs you play appear here</div></div>`;
+    return;
   }
-  const favs = recent.filter(t=>liked.has(t.id));
-  let html = '';
-  if (favs.length) {
-    html += `<div class="sec"><div class="sec-hdr"><div class="sec-ttl">❤️ Favorites</div></div>
-      <div class="hs">${favs.map(t=>sCard(t)).join('')}</div></div>`;
-  }
-  html += `<div class="sec"><div class="sec-hdr"><div class="sec-ttl">Recently Played</div></div>
-    ${recent.slice(0,20).map((t,i)=>liItem(t,i+1)).join('')}</div>`;
-  el.innerHTML = html;
+  const favs=recent.filter(t=>liked.has(t.id));
+  let html='';
+  if(favs.length) html+=`<div class="sec"><div class="sec-hdr"><div class="sec-ttl">❤️ Favorites</div></div><div class="hs">${favs.map(t=>sCard(t)).join('')}</div></div>`;
+  html+=`<div class="sec"><div class="sec-hdr"><div class="sec-ttl">Recently Played</div></div>${recent.slice(0,20).map((t,i)=>liItem(t,i+1)).join('')}</div>`;
+  el.innerHTML=html;
 }
 
 // ── SETTINGS ──
-function buildSettings() {
-  document.getElementById('settings-body').innerHTML = `
+function buildSettings(){
+  document.getElementById('settings-body').innerHTML=`
     <div class="s-sect-ttl">Content</div>
     <div class="s-grp">
       <div class="s-row" onclick="openRegionSheet()">
         <div class="s-ico">🌍</div>
-        <div class="s-inf">
-          <div class="s-lbl">Content Country</div>
-          <div class="s-val" id="s-region-val">${REGIONS.find(r=>r.code===S.region)?.name||S.region}</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Content Country</div><div class="s-val" id="s-region-val">${REGIONS.find(r=>r.code===S.region)?.name||S.region}</div></div>
         <div class="s-arr">›</div>
       </div>
       <div class="s-row" onclick="openQualitySheet()">
         <div class="s-ico">🎵</div>
-        <div class="s-inf">
-          <div class="s-lbl">Stream Quality</div>
-          <div class="s-val" id="s-qual-val">${S.quality==='high'?'High – 320kbps':S.quality==='medium'?'Medium – 128kbps':'Low – 64kbps'}</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Stream Quality</div><div class="s-val" id="s-qual-val">${S.quality==='high'?'High – 320kbps':S.quality==='medium'?'Medium – 128kbps':'Low – 64kbps'}</div></div>
         <div class="s-arr">›</div>
       </div>
     </div>
-
     <div class="s-sect-ttl">Playback</div>
     <div class="s-grp">
       <div class="s-row">
         <div class="s-ico">🎛️</div>
-        <div class="s-inf">
-          <div class="s-lbl">Crossfade (BETA)</div>
-          <div class="s-val">Smooth transition between songs</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Crossfade (BETA)</div><div class="s-val">Smooth transition between songs</div></div>
         <button class="tog ${S.crossfade?'on':''}" id="tog-xf" onclick="togSet('crossfade','ap_xfade','tog-xf')"></button>
       </div>
       <div class="s-row">
         <div class="s-ico">🎧</div>
-        <div class="s-inf">
-          <div class="s-lbl">DJ-Style Transition</div>
-          <div class="s-val">Like Apple Music's crossfade</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">DJ-Style Transition</div><div class="s-val">Like Apple Music crossfade</div></div>
         <button class="tog ${S.djStyle?'on':''}" id="tog-dj" onclick="togSet('djStyle','ap_dj','tog-dj')"></button>
       </div>
       <div class="s-row" onclick="openXfDurSheet()">
         <div class="s-ico">⏱️</div>
-        <div class="s-inf">
-          <div class="s-lbl">Crossfade Duration</div>
-          <div class="s-val" id="s-xfdur-val">${S.xfadeDur}s</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Crossfade Duration</div><div class="s-val" id="s-xfdur-val">${S.xfadeDur}s</div></div>
         <div class="s-arr">›</div>
       </div>
     </div>
-
     <div class="s-sect-ttl">Lyrics</div>
     <div class="s-grp">
-      <div class="s-row" onclick="toast('📝 LRCLIB — free & open source synced lyrics')">
+      <div class="s-row" onclick="toast('📝 LRCLIB — free synced lyrics')">
         <div class="s-ico">🎤</div>
-        <div class="s-inf">
-          <div class="s-lbl">Lyrics Provider</div>
-          <div class="s-val">LRCLIB (synced + free)</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Lyrics Provider</div><div class="s-val">LRCLIB (synced)</div></div>
         <div class="s-arr">›</div>
       </div>
     </div>
-
     <div class="s-sect-ttl">About</div>
     <div class="s-grp">
       <div class="s-row">
         <div class="s-ico">🎵</div>
-        <div class="s-inf">
-          <div class="s-lbl">Applify</div>
-          <div class="s-val">Version 3.0 — Free music for everyone</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Applify</div><div class="s-val">Version 3.0 — Free music for everyone</div></div>
       </div>
       <div class="s-row" onclick="clearAll()">
         <div class="s-ico">🗑️</div>
-        <div class="s-inf">
-          <div class="s-lbl">Clear All Data</div>
-          <div class="s-val">Clears history, favorites & settings</div>
-        </div>
+        <div class="s-inf"><div class="s-lbl">Clear All Data</div><div class="s-val">History, favorites & settings</div></div>
         <div class="s-arr">›</div>
       </div>
     </div>
-    <div style="height:24px"></div>
-  `;
+    <div style="height:24px"></div>`;
 }
-
-function togSet(key, storKey, elId) {
-  S[key] = !S[key];
-  localStorage.setItem(storKey, String(S[key]));
-  document.getElementById(elId).classList.toggle('on', S[key]);
-  toast(S[key] ? '✅ Enabled' : 'Disabled');
-}
-
-function openQualitySheet() {
-  openGenSheet('Stream Quality', [
-    { label:'High – 320kbps',   val:'high'   },
-    { label:'Medium – 128kbps', val:'medium' },
-    { label:'Low – 64kbps',     val:'low'    },
-  ], S.quality, val => {
-    S.quality = val;
-    localStorage.setItem('ap_quality', val);
-    document.getElementById('s-qual-val').textContent =
-      val==='high'?'High – 320kbps':val==='medium'?'Medium – 128kbps':'Low – 64kbps';
+function togSet(key,storKey,elId){S[key]=!S[key];localStorage.setItem(storKey,String(S[key]));document.getElementById(elId).classList.toggle('on',S[key]);toast(S[key]?'✅ Enabled':'Disabled');}
+function openQualitySheet(){
+  openGenSheet('Stream Quality',[{label:'High – 320kbps',val:'high'},{label:'Medium – 128kbps',val:'medium'},{label:'Low – 64kbps',val:'low'}],S.quality,val=>{
+    S.quality=val;localStorage.setItem('ap_quality',val);
+    document.getElementById('s-qual-val').textContent=val==='high'?'High – 320kbps':val==='medium'?'Medium – 128kbps':'Low – 64kbps';
     toast('✅ Quality updated');
   });
 }
-
-function openXfDurSheet() {
-  const opts = [3,5,8,10,15].map(n=>({ label: n+'s', val: n }));
-  openGenSheet('Crossfade Duration', opts, S.xfadeDur, val => {
-    S.xfadeDur = val;
-    localStorage.setItem('ap_xfdur', String(val));
-    document.getElementById('s-xfdur-val').textContent = val + 's';
-    toast('✅ Duration: ' + val + 's');
+function openXfDurSheet(){
+  openGenSheet('Crossfade Duration',[3,5,8,10,15].map(n=>({label:n+'s',val:n})),S.xfadeDur,val=>{
+    S.xfadeDur=val;localStorage.setItem('ap_xfdur',String(val));
+    document.getElementById('s-xfdur-val').textContent=val+'s';
+    toast('✅ Duration: '+val+'s');
   });
 }
-
-function openGenSheet(title, options, current, cb) {
-  document.getElementById('gen-sheet-ttl').textContent = title;
-  window._gsCb = cb;
-  document.getElementById('gen-sheet-list').innerHTML = options.map((o,i)=>`
+function openGenSheet(title,options,current,cb){
+  document.getElementById('gen-sheet-ttl').textContent=title;
+  window._gsCb=cb;window._gsOpts=options;
+  document.getElementById('gen-sheet-list').innerHTML=options.map((o,i)=>`
     <div class="sh-item ${o.val==current?'sel':''}" onclick="pickGenSheet(${i})">
       <div class="sh-dot ${o.val==current?'on':''}">
         ${o.val==current?'<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6 9 17l-5-5"/></svg>':''}
       </div>
       <span>${esc(o.label)}</span>
     </div>`).join('');
-  window._gsOpts = options;
   openSheet('gen-sheet');
 }
-function pickGenSheet(i) {
-  window._gsCb?.(window._gsOpts[i].val);
-  closeSheet('gen-sheet');
-}
-
-function clearAll() {
-  localStorage.clear();
-  recent = [];
-  liked.clear();
-  toast('🗑️ All data cleared');
-  renderLibrary();
-}
+function pickGenSheet(i){window._gsCb?.(window._gsOpts[i].val);closeSheet('gen-sheet');}
+function clearAll(){localStorage.clear();recent=[];liked.clear();toast('🗑️ All data cleared');renderLibrary();}
 
 // ── SHEETS & TOAST ──
-function openSheet(id)  { document.getElementById(id).classList.add('open'); }
-function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
-
+function openSheet(id){document.getElementById(id).classList.add('open');}
+function closeSheet(id){document.getElementById(id).classList.remove('open');}
 let _tt;
-function toast(msg, dur=2800) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('in');
-  clearTimeout(_tt); _tt = setTimeout(()=>el.classList.remove('in'), dur);
-}
+function toast(msg,dur=2800){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('in');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('in'),dur);}
 
 // ── UTILS ──
-function fmt(s) {
-  if (!s||isNaN(s)) return '0:00';
-  return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-}
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function enc(o) { return JSON.stringify(JSON.stringify(o)); }
+function fmt(s){if(!s||isNaN(s))return'0:00';return`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function enc(o){return JSON.stringify(JSON.stringify(o));}
 </script>
 </body>
 </html>
