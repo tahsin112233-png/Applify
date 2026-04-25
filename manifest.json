@@ -1,7 +1,7 @@
 {
   "name": "Applify",
   "short_name": "Applify",
-  "description": "Free music powered by YouTube Music — Apple Music style",
+  "description": "Free music powered by YouTube — Apple Music style",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
@@ -22,7 +22,6 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
   "shortcuts": [
     {
       "name": "Search Music",
