@@ -2,21 +2,21 @@
   "version": 2,
   "builds": [
     { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "*.html",   "use": "@vercel/static" },
-    { "src": "*.json",   "use": "@vercel/static" },
-    { "src": "*.js",     "use": "@vercel/static" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "manifest.json", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
     { "src": "icons/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)",     "dest": "/$1" }
+    { "src": "/(.*)", "dest": "/$1" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
       ]
     },
     {
