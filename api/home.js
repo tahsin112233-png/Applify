@@ -1,47 +1,55 @@
-const ITKEY = 'AIzaSyC9XL3ZjWddXya6X74dJoCTL-KKVH2y5AA';
+const YT_API_KEY = process.env.YT_API_KEY || '';
 
-function ctx(gl = 'US') {
-  return {
-    client: {
-      clientName: 'WEB_REMIX',
-      clientVersion: '1.20240101.01.00',
-      hl: 'en', gl,
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36',
-    }
-  };
-}
-
-const HEADERS = {
-  'Content-Type': 'application/json',
-  'X-YouTube-Client-Name': '67',
-  'X-YouTube-Client-Version': '1.20240101.01.00',
-  'Origin': 'https://music.youtube.com',
-  'Referer': 'https://music.youtube.com/',
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
-  'Accept-Language': 'en-US,en;q=0.9',
+const REGION_NAMES = {
+  BD:'Bangladesh', IN:'India', US:'USA', GB:'UK', PK:'Pakistan',
+  NG:'Nigeria', BR:'Brazil', JP:'Japan', KR:'South Korea',
+  DE:'Germany', FR:'France', CA:'Canada', AU:'Australia', MX:'Mexico', AE:'UAE',
 };
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=180, stale-while-revalidate=60');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
 
-  const region = (req.query.region || 'US').toUpperCase().slice(0, 2);
+  const region = (req.query.region || 'BD').toUpperCase().slice(0, 2);
+
+  if (!YT_API_KEY) {
+    return res.status(500).json({ sections: [], error: 'YT_API_KEY not set in Vercel environment variables' });
+  }
 
   try {
-    const response = await fetch(
-      `https://music.youtube.com/youtubei/v1/browse?key=${ITKEY}`,
-      {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify({ browseId: 'FEmusic_home', context: ctx(region) }),
-      }
-    );
+    const isSubcontinent = ['BD','IN','PK'].includes(region);
+    const isAsia = ['JP','KR','CN'].includes(region);
 
-    if (!response.ok) throw new Error('YTM returned ' + response.status);
-    const data = await response.json();
-    const sections = parseHome(data);
+    const [trending, globalHits, regional, kpop, international] = await Promise.all([
+      fetchTrending(region),
+      region !== 'US' ? fetchTrending('US') : Promise.resolve([]),
+      isSubcontinent ? fetchSearch('latest hindi bangla songs 2025', region) :
+      isAsia         ? fetchSearch('new asian music 2025', region) :
+                       fetchSearch('top pop music 2025', region),
+      fetchSearch('kpop new songs 2025', 'KR'),
+      fetchSearch('top english hits 2025', 'US'),
+    ]);
 
-    if (!sections.length) throw new Error('No sections parsed');
+    const sections = [];
+
+    if (trending.length)
+      sections.push({ title: `Trending in ${REGION_NAMES[region] || region}`, items: trending });
+
+    if (globalHits.length && region !== 'US')
+      sections.push({ title: 'Global Hits', items: globalHits.slice(0, 15) });
+
+    if (regional.length)
+      sections.push({
+        title: isSubcontinent ? 'Desi Hits' : isAsia ? 'Asian Hits' : 'Top Picks',
+        items: regional.slice(0, 15)
+      });
+
+    if (kpop.length)
+      sections.push({ title: 'K-Pop', items: kpop.slice(0, 12) });
+
+    if (international.length)
+      sections.push({ title: 'International', items: international.slice(0, 15) });
+
     return res.json({ sections, region });
   } catch (err) {
     console.error('[home]', err.message);
@@ -49,65 +57,57 @@ module.exports = async (req, res) => {
   }
 };
 
-function parseHome(data) {
+async function fetchTrending(region) {
   try {
-    const tabs = data?.contents?.singleColumnBrowseResultsRenderer?.tabs;
-    if (!tabs) return [];
-    const contents = tabs[0]?.tabRenderer?.content?.sectionListRenderer?.contents || [];
-    const out = [];
+    const url = new URL('https://www.googleapis.com/youtube/v3/videos');
+    url.searchParams.set('part', 'snippet');
+    url.searchParams.set('chart', 'mostPopular');
+    url.searchParams.set('videoCategoryId', '10');
+    url.searchParams.set('maxResults', '20');
+    url.searchParams.set('regionCode', region);
+    url.searchParams.set('key', YT_API_KEY);
 
-    for (const c of contents) {
-      const shelf = c?.musicCarouselShelfRenderer || c?.musicImmersiveCarouselRenderer;
-      if (!shelf) continue;
+    const r = await fetch(url.toString());
+    if (!r.ok) return [];
+    const data = await r.json();
 
-      const title =
-        shelf?.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text ||
-        shelf?.header?.musicImmersiveCarouselRenderer?.title?.runs?.[0]?.text ||
-        'Featured';
-
-      const items = (shelf.contents || []).map(parseItem).filter(Boolean);
-      if (items.length) out.push({ title, items });
-    }
-    return out;
-  } catch (e) {
-    console.error('[parseHome]', e.message);
-    return [];
-  }
+    return (data.items || []).map(item => ({
+      id:     item.id,
+      title:  item.snippet?.title,
+      artist: cleanChannel(item.snippet?.channelTitle),
+      thumb:  item.snippet?.thumbnails?.maxres?.url ||
+              item.snippet?.thumbnails?.high?.url ||
+              item.snippet?.thumbnails?.medium?.url || '',
+    })).filter(t => t.id && t.title);
+  } catch { return []; }
 }
 
-function getBestThumb(thumbs) {
-  if (!thumbs?.length) return '';
-  const sorted = [...thumbs].sort((a, b) => (b.width || 0) - (a.width || 0));
-  return sorted[0]?.url || '';
+async function fetchSearch(q, region) {
+  try {
+    const url = new URL('https://www.googleapis.com/youtube/v3/search');
+    url.searchParams.set('part', 'snippet');
+    url.searchParams.set('q', q);
+    url.searchParams.set('type', 'video');
+    url.searchParams.set('videoCategoryId', '10');
+    url.searchParams.set('maxResults', '15');
+    url.searchParams.set('order', 'relevance');
+    url.searchParams.set('regionCode', region);
+    url.searchParams.set('key', YT_API_KEY);
+
+    const r = await fetch(url.toString());
+    if (!r.ok) return [];
+    const data = await r.json();
+
+    return (data.items || []).map(item => ({
+      id:     item.id?.videoId,
+      title:  item.snippet?.title,
+      artist: cleanChannel(item.snippet?.channelTitle),
+      thumb:  item.snippet?.thumbnails?.high?.url ||
+              item.snippet?.thumbnails?.medium?.url || '',
+    })).filter(t => t.id && t.title);
+  } catch { return []; }
 }
 
-function parseItem(item) {
-  // Two-row item (most common)
-  const tr = item?.musicTwoRowItemRenderer;
-  if (tr) {
-    const title  = tr?.title?.runs?.[0]?.text;
-    const artist = tr?.subtitle?.runs?.map(r => r.text).join('') || '';
-    const thumbs = tr?.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails || [];
-    const thumb  = getBestThumb(thumbs);
-    const videoId =
-      tr?.navigationEndpoint?.watchEndpoint?.videoId ||
-      tr?.navigationEndpoint?.watchPlaylistEndpoint?.videoId ||
-      tr?.overlay?.musicItemThumbnailOverlayRenderer?.content?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint?.videoId;
-    if (videoId && title) return { id: videoId, title, artist, thumb };
-  }
-
-  // Responsive list item
-  const rl = item?.musicResponsiveListItemRenderer;
-  if (rl) {
-    const title  = rl?.flexColumns?.[0]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.[0]?.text;
-    const artist = rl?.flexColumns?.[1]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.map(r=>r.text).join('') || '';
-    const thumbs = rl?.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails || [];
-    const thumb  = getBestThumb(thumbs);
-    const videoId =
-      rl?.overlay?.musicItemThumbnailOverlayRenderer?.content?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint?.videoId ||
-      rl?.navigationEndpoint?.watchEndpoint?.videoId;
-    if (videoId && title) return { id: videoId, title, artist, thumb };
-  }
-
-  return null;
+function cleanChannel(name) {
+  return (name || '').replace(/ - Topic$/i, '').replace(/VEVO$/i, '').replace(/Official$/i, '').trim();
 }
