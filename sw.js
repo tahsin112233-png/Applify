@@ -1,4 +1,4 @@
-const CACHE = 'applify-v3';
+const CACHE = 'applify-v4';
 const PRECACHE = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {
@@ -18,25 +18,23 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Always network for API, audio streams, lyrics
+  // Network only for API and YouTube
   if (
     url.pathname.startsWith('/api/') ||
-    url.hostname.includes('piped') ||
-    url.hostname.includes('lrclib') ||
-    url.hostname.includes('googlevideo') ||
-    url.hostname.includes('googleapis')
+    url.hostname.includes('youtube.com') ||
+    url.hostname.includes('ytimg.com') ||
+    url.hostname.includes('googleapis.com') ||
+    url.hostname.includes('lrclib.net')
   ) {
-    e.respondWith(
-      fetch(e.request).catch(() =>
-        new Response(JSON.stringify({ error: 'offline' }), {
-          headers: { 'Content-Type': 'application/json' }
-        })
-      )
-    );
+    e.respondWith(fetch(e.request).catch(() =>
+      new Response(JSON.stringify({ error: 'offline' }), {
+        headers: { 'Content-Type': 'application/json' }
+      })
+    ));
     return;
   }
 
-  // Cache first for static assets
+  // Cache first for static
   e.respondWith(
     caches.match(e.request).then(cached => {
       const net = fetch(e.request).then(res => {
@@ -48,4 +46,13 @@ self.addEventListener('fetch', e => {
       return cached || net;
     })
   );
+});
+
+// Keep service worker alive for background audio
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
+  if (e.data === 'KEEP_ALIVE') {
+    // Respond to keep-alive pings from the page
+    e.ports[0]?.postMessage('ALIVE');
+  }
 });
