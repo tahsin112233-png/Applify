@@ -4,7 +4,6 @@
   "private": true,
   "description": "Free music PWA powered by YouTube",
   "engines": {
-    "node": "20.x"
-  },
-  "dependencies": {}
+    "node": ">=18"
+  }
 }
