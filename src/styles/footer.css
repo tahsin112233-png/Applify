@@ -1,231 +1,265 @@
-/*
-show navbar and miniplayer together in mobile.
-in landcape show separately,
-when player active hide miniplayer in both.
+/* =============================================
+   APPLIFY — Mini Player + Tab Bar
+   Apple Music iOS 26 Inspired
+   ============================================= */
 
-*/
-
-/* --- Footer & MiniPlayer Container --- */
+/* ── Footer shell ───────────────────────────── */
 footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
   display: flex;
   flex-direction: column;
-  position: relative;
-  bottom: var(--height);
-  z-index: 2;
-  width: 100dvmin;
-  --height: var(--size-8);
-  height: var(--height);
-  background: linear-gradient(rgb(from var(--onBg) r g b / 0.4), var(--trueBg));
-  backdrop-filter: blur(var(--size-px-3));
-  border-top-left-radius: var(--roundness);
-  border-top-right-radius: var(--roundness);
-  box-shadow: var(--shadow-1);
-  overflow: hidden;
+  pointer-events: none;
 
-  &:has(.miniplayer) {
-    --height: calc(var(--size-9) + var(--size-7));
-
-    @media(orientation:portrait) {
-      img {
-        height: var(--size-8);
-        margin-left: var(--size-1);
-      }
-    }
+  /* Everything inside is clickable */
+  > * {
+    pointer-events: all;
   }
-
-
-  @media(orientation:landscape) {
-    margin: 0 auto;
-    align-items: center;
-    flex-direction: row;
-    height: var(--size-9);
-    bottom: var(--size-10);
-    border-radius: var(--roundness);
-    --navW: calc(var(--size-8) * 3);
-    width: var(--navW);
-
-    &:has(.miniplayer) {
-      width: calc(100dvmin + var(--navW)) !important;
-    }
-
-    nav {
-      width: var(--navW);
-      row-gap: var(--size-1);
-    }
-
-    .miniplayer {
-      width: 100dvmin;
-    }
-
-    :root:has(#playerSection) & {
-      position: fixed;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
-      height: auto;
-      bottom: unset;
-      background: none;
-      backdrop-filter: none;
-      border: none;
-      border-radius: 0;
-      z-index: 100;
-      box-shadow: none;
-      margin: 0;
-
-      nav {
-        flex-direction: column;
-        width: auto;
-        height: auto;
-        margin: 0;
-
-        i {
-          margin: var(--size-2) 0;
-          width: 100%;
-          flex-grow: 0;
-          height: auto;
-        }
-
-      }
-    }
-  }
-
 }
 
-
-
+/* ── Mini Player ────────────────────────────── */
 .miniplayer {
   display: flex;
   align-items: center;
-  height: var(--size-9);
-  padding: var(--size-1);
-  animation: var(--animation-slide-in-up) forwards;
+  gap: 10px;
+  margin: 0 8px 6px 8px;
+  padding: 10px 14px 10px 10px;
+  height: var(--miniplayer-height);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: var(--roundness-lg);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.08);
   cursor: pointer;
+  overflow: hidden;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
 
-  &,
-  * {
-    transition: all 0.4s ease;
-  }
-
-  img {
-    height: calc(var(--size-8) + var(--size-2));
-    object-fit: cover;
-    border: var(--border);
-    border-radius: calc(var(--roundness) * 0.7);
-    box-shadow: var(--shadow-1);
+  /* Dynamic color tint from album art */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+      oklch(from var(--source) 40% calc(c * var(--chroma)) h / 0.15),
+      transparent 60%
+    );
+    border-radius: inherit;
     pointer-events: none;
   }
 
+  img {
+    height: 48px;
+    width: 48px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+
+  .mediaDetails {
+    flex: 1;
+    min-width: 0;
+    pointer-events: none;
+
+    a {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+  }
+
+  /* Control buttons */
   button,
-  i {
+  > i {
     background: none;
     border: none;
     color: var(--text);
-    font-size: var(--size-5);
+    font-size: 22px;
+    padding: 6px;
+    margin: 0;
+    border-radius: 50%;
     aspect-ratio: 1;
-    padding: 0;
-    margin: 0 var(--size-1);
-    transition: transform 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 
     &:active {
-      transform: scale(0.75);
+      transform: scale(0.82);
+      opacity: 0.6;
     }
   }
 
   #playButton {
-    display: flex;
-    align-items: center;
-    font-size: var(--size-7);
-    margin-left: var(--size-2);
-    margin-right: var(--size-2);
+    font-size: 28px;
+    color: var(--text);
   }
 
-  .ri-heart-line,
   .ri-heart-fill {
-    font-size: var(--size-6);
+    color: var(--accent);
   }
 
-  .mediaDetails {
-    width: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    margin-left: var(--size-2);
-
-    a {
-      font-weight: var(--font-weight-6);
-      font-size: var(--font-size-2);
-      display: block;
-    }
-
-    a,
-    p {
-      white-space: nowrap;
-      overflow: clip;
-      text-overflow: ellipsis;
-      color: var(--text);
-    }
-
-    p {
-      font-size: calc(var(--size-6) / 2);
-      font-weight: var(--font-weight-5);
-      opacity: 90%;
-    }
-  }
-
+  /* Progress bar at bottom edge */
   progress {
     position: absolute;
-    z-index: -1;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: transparent;
-    appearance: none;
+    height: 3px;
     border: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 0 0 var(--roundness-lg) var(--roundness-lg);
 
     &::-webkit-progress-bar {
-      background: transparent;
-    }
-
-    &::-moz-progress-bar {
-      background: linear-gradient(transparent, var(--onBg2));
-      border-bottom: var(--border-size-1) solid var(--text2);
-      transition: all 1s linear;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: inherit;
     }
 
     &::-webkit-progress-value {
-      background: linear-gradient(transparent, var(--onBg2));
-      border-bottom: var(--border-size-1) solid var(--text2);
-      transition: all 1s linear;
+      background: var(--accent);
+      border-radius: inherit;
+      transition: width 1s linear;
+    }
+
+    &::-moz-progress-bar {
+      background: var(--accent);
+      border-radius: inherit;
+      transition: width 1s linear;
     }
   }
 }
 
-
-
-/* --- NavBar --- */
+/* ── Tab Bar ────────────────────────────────── */
 nav {
   display: flex;
-  width: 100%;
-  margin: auto 0;
+  align-items: stretch;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: var(--glass-border);
+  height: calc(var(--tab-height) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -1px 0 var(--border-color);
 
-  i {
-    font-size: var(--font-size-3);
-    padding: 0 var(--size-2);
-    opacity: 0.5;
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: center;
-    color: var(--text);
-    height: var(--size-7);
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: none;
+    background: none;
+    color: var(--text2);
     cursor: pointer;
-    transition: opacity 0.3s ease;
-  }
+    padding: 8px 4px 0;
+    transition: color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
 
-  .on {
+    i {
+      font-size: 22px;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    span {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    &.active {
+      color: var(--accent);
+
+      i {
+        transform: scale(1.12);
+      }
+    }
+
+    &:active i {
+      transform: scale(0.88);
+    }
+  }
+}
+
+/* ── Animations ─────────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
     opacity: 1;
-    color: var(--text);
-    font-weight: var(--font-weight-7);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Landscape layout ───────────────────────── */
+@media (orientation: landscape) {
+  footer {
+    /* Left-side vertical nav in landscape */
+    flex-direction: row;
+    top: 0;
+    right: auto;
+    width: auto;
+    height: 100dvh;
+    bottom: 0;
+    align-items: stretch;
   }
 
+  nav {
+    flex-direction: column;
+    width: 80px;
+    height: 100%;
+    border-top: none;
+    border-right: var(--glass-border);
+    padding-bottom: 0;
+
+    .nav-tab {
+      padding: 12px 4px;
+      flex: 0 0 auto;
+    }
+  }
+
+  .miniplayer {
+    position: fixed;
+    bottom: 12px;
+    left: 88px;
+    right: 12px;
+    margin: 0;
+  }
+}
+
+/* ── Spacer so content isn't hidden under tab bar ── */
+main {
+  padding-bottom: calc(var(--tab-height) + var(--miniplayer-height) + var(--safe-bottom) + 8px);
+}
+
+/* When no miniplayer, less bottom padding */
+footer:not(:has(.miniplayer)) ~ main,
+main:has(~ footer:not(:has(.miniplayer))) {
+  padding-bottom: calc(var(--tab-height) + var(--safe-bottom));
 }
