@@ -30,9 +30,9 @@ export default defineConfig(({ command }) => ({
     apiMiddleware(command === 'serve'),
     VitePWA({
       manifest: {
-        "short_name": "Ytify",
-        "name": "Listen with ytify",
-        "description": "32kb/s to 128kb/s youtube audio streaming website. Copy a youtube video link and listen to it as an audio totally free.",
+        "short_name": "Applify",
+        "name": "Applify — Beautiful Music",
+        "description": "Stream YouTube audio with a beautiful Apple Music-inspired interface. Free, fast, and works in your browser.",
         "icons": [
           {
             "src": "logo192.png",
@@ -63,35 +63,23 @@ export default defineConfig(({ command }) => ({
           {
             "name": "History",
             "url": "/?collection=history",
-            "icons": [
-              {
-                "src": "memories-fill.png",
-                "sizes": "192x192",
-              }]
+            "icons": [{ "src": "memories-fill.png", "sizes": "192x192" }]
           },
           {
             "name": "Favorites",
             "url": "/?collection=favorites",
-            "icons": [
-              {
-                "src": "heart-fill.png",
-                "sizes": "192x192",
-              }]
+            "icons": [{ "src": "heart-fill.png", "sizes": "192x192" }]
           },
           {
             "name": "Listen Later",
             "url": "/?collection=listenLater",
-            "icons": [
-              {
-                "src": "calendar-schedule-fill.png",
-                "sizes": "192x192",
-              }]
+            "icons": [{ "src": "calendar-schedule-fill.png", "sizes": "192x192" }]
           }
         ],
         "start_url": "/",
         "display": "standalone",
-        "theme_color": "black",
-        "background_color": "black",
+        "theme_color": "#000000",
+        "background_color": "#000000",
         "share_target": {
           "action": "/",
           "method": "GET",
@@ -124,9 +112,7 @@ const injectEruda = (serve: boolean) => serve ? (<PluginOption>{
     tags: [
       {
         tag: 'script',
-        attrs: {
-          src: '/node_modules/eruda/eruda'
-        },
+        attrs: { src: '/node_modules/eruda/eruda' },
         injectTo: 'body-prepend'
       },
       {
@@ -145,7 +131,7 @@ const apiMiddleware = (serve: boolean): PluginOption => serve ? {
     server.middlewares.use(async (req, res, next) => {
       const url = new URL(req.url || '', 'http://localhost');
       const path = url.pathname.replace(/^\/api\//, '').replace(/^\//, '');
-      
+
       if (endpoints.includes(path) || req.url?.startsWith('/api/')) {
         const { createLocalAdapter } = await server.ssrLoadModule('./src/backend/localAdapter.ts');
         const adapter = createLocalAdapter();
@@ -156,5 +142,3 @@ const apiMiddleware = (serve: boolean): PluginOption => serve ? {
     });
   }
 } : [];
-
-
