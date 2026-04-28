@@ -1,26 +1,25 @@
 import { navStore, setNavStore, t } from "@stores";
 import { setDrawer } from "@utils";
 
-export default function() {
-
+export default function () {
   return (
     <nav>
-      <i
+      <button
+        class="nav-tab"
+        classList={{ active: navStore.queue.state }}
         aria-label={t('nav_queue')}
-        class="ri-order-play-fill"
-        classList={{ on: navStore.queue.state }}
         onclick={() => {
           setNavStore('queue', 'state', !navStore.queue.state);
         }}
-      ></i>
+      >
+        <i class={navStore.queue.state ? 'ri-order-play-fill' : 'ri-order-play-line'}></i>
+        <span>Queue</span>
+      </button>
 
-      <i
+      <button
+        class="nav-tab"
+        classList={{ active: navStore.search.state }}
         aria-label={t('nav_search')}
-        class={'ri-search-2-' + (navStore.search.state ? 'fill' : 'line')
-        }
-        classList={{
-          'on': navStore.search.state
-        }}
         onclick={() => {
           const state = !navStore.search.state;
           setNavStore('search', 'state', state);
@@ -30,12 +29,15 @@ export default function() {
             setDrawer('lastMainFeature', 'search');
           }
         }}
-      ></i>
+      >
+        <i class={navStore.search.state ? 'ri-search-2-fill' : 'ri-search-2-line'}></i>
+        <span>Search</span>
+      </button>
 
-      <i
+      <button
+        class="nav-tab"
+        classList={{ active: navStore.library.state }}
         aria-label={t('nav_library')}
-        class={'ri-archive-stack-' + (navStore.library.state ? 'fill' : 'line')}
-        classList={{ 'on': navStore.library.state }}
         onclick={() => {
           const state = !navStore.library.state;
           setNavStore('library', 'state', state);
@@ -45,8 +47,10 @@ export default function() {
             setDrawer('lastMainFeature', 'library');
           }
         }}
-      ></i>
-
+      >
+        <i class={navStore.library.state ? 'ri-archive-stack-fill' : 'ri-archive-stack-line'}></i>
+        <span>Library</span>
+      </button>
     </nav>
   );
 }
