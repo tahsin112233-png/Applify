@@ -5,38 +5,121 @@
 @import 'remixicon.css';
 @import 'tooltips.css';
 
+/* =============================================
+   APPLIFY — Apple Music iOS 26 Inspired Theme
+   ============================================= */
+
 :root {
+  /* Dynamic album-art color (set by JS) */
   --source: initial;
   --schemeMultiplier: initial;
-  --bg: initial;
-  --text: initial;
   --chroma: 0;
+
+  /* Core palette — dark by default */
+  --bg: #000000;
+  --trueBg: #000000;
+  --surface: #1C1C1E;
+  --surface2: #2C2C2E;
+  --surface3: #3A3A3C;
+  --text: #FFFFFF;
+  --text2: rgba(255, 255, 255, 0.6);
+  --text3: rgba(255, 255, 255, 0.28);
+
+  /* Accent — Apple Music red */
+  --accent: #FA233B;
+  --accent-gradient: linear-gradient(135deg, #FF6B81, #FA233B);
+
+  /* Dynamic scheme (color-mixed from album art when available) */
   --scheme: color-mix(in srgb, oklch(from var(--source) 70% calc(c * var(--chroma)) h), var(--bg) 85%);
   --onBg: color-mix(in srgb, oklch(from var(--source) 85% calc(c * var(--chroma)) h), var(--bg) 85%);
   --onBg2: color-mix(in srgb, oklch(from var(--source) 80% calc(35% * var(--chroma)) h), var(--bg) 70%);
   --blurMix: color-mix(in srgb, oklch(from var(--onBg) l calc(c * var(--chroma)) / 0.1), var(--bg) 40%);
-  --text2: color-mix(in srgb, oklch(from var(--source) 50% calc(80% * var(--chroma)) h), var(--text) 75%);
-  --gap: var(--size-fluid-2);
-  --borderColor: oklch(from var(--text) l c h / 0.2);
-  --border: var(--border-size-1) solid var(--borderColor);
-  --roundness: 0.4rem;
-  --blur: blur(var(--size-px-3));
+  --text2dynamic: color-mix(in srgb, oklch(from var(--source) 50% calc(80% * var(--chroma)) h), var(--text) 75%);
+
+  /* Layout */
+  --gap: clamp(12px, 4vw, 20px);
+  --tab-height: 83px;
+  --miniplayer-height: 72px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Borders & shapes */
+  --border-color: rgba(255, 255, 255, 0.10);
+  --border: 0.5px solid var(--border-color);
+  --roundness: 14px;
+  --roundness-sm: 8px;
+  --roundness-lg: 22px;
+  --roundness-pill: 100px;
+
+  /* Glass effects */
+  --glass-bg: rgba(28, 28, 30, 0.80);
+  --glass-blur: blur(24px) saturate(180%);
+  --glass-border: 0.5px solid rgba(255, 255, 255, 0.12);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.65);
+
+  /* Player */
   --player-bg: none;
   --player-bp: 0 0;
+
+  /* Typography — SF Pro-like system font stack */
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    ui-rounded, 'Segoe UI', system-ui, sans-serif;
+
+  /* Landscape */
   --landscapeSections: 2;
-  --trueBg: var(--bg);
-  --font: ui-rounded, Segoe UI, source-sans-pro, Inter, Noto Sans, Oxygen, Calibri, Cantarell, Ubuntu, Roboto, system-ui, Open Sans, Helvetica Neue, sans-serif;
 }
+
+/* Light mode override */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --bg: #F2F2F7;
+    --trueBg: #F2F2F7;
+    --surface: #FFFFFF;
+    --surface2: #E5E5EA;
+    --surface3: #D1D1D6;
+    --text: #000000;
+    --text2: rgba(0, 0, 0, 0.55);
+    --text3: rgba(0, 0, 0, 0.28);
+    --border-color: rgba(0, 0, 0, 0.10);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: 0.5px solid rgba(0, 0, 0, 0.10);
+  }
+}
+
+[data-theme='dark'] {
+  --bg: #000000;
+  --trueBg: #000000;
+  --surface: #1C1C1E;
+  --surface2: #2C2C2E;
+  --surface3: #3A3A3C;
+  --text: #FFFFFF;
+  --text2: rgba(255, 255, 255, 0.6);
+  --text3: rgba(255, 255, 255, 0.28);
+  --border-color: rgba(255, 255, 255, 0.10);
+  --glass-bg: rgba(28, 28, 30, 0.80);
+}
+
+/* =============================================
+   BASE ELEMENTS
+   ============================================= */
 
 html {
   height: 100dvh;
   background: var(--trueBg);
+  color-scheme: dark;
 }
 
 body {
   height: 100dvh;
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
 }
 
 select {
@@ -48,15 +131,41 @@ select {
   option,
   optgroup {
     cursor: pointer;
-    background: var(--bg);
+    background: var(--surface);
+    color: var(--text);
   }
 }
 
 a {
-  color: var(--text);
+  color: var(--accent);
+  text-decoration: none;
 }
 
 i {
   cursor: pointer;
   position: relative;
+}
+
+/* Scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface3) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface3);
+  border-radius: 4px;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
 }
