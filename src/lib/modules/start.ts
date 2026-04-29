@@ -95,20 +95,6 @@ export default async function() {
   document.addEventListener('pointerover', toggleTooltip);
   document.addEventListener('pointerout', toggleTooltip);
 
-
-  if (import.meta.env.PROD)
-    await import('virtual:pwa-register').then(pwa => {
-
-      const handleUpdate = pwa.registerSW({
-        async onNeedRefresh() {
-          setStore('snackbar', `${t('updating')}`);
-          setTimeout(() => handleUpdate(true), 1500);
-        }
-      });
-    });
-
   cleanseLibraryData();
-
-
 
 }
