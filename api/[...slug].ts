@@ -1,31 +1,25 @@
-export const config = { runtime: 'edge' };
+export default async function handler(req: any, res: any) {
+  const slug = Array.isArray(req.query.slug)
+    ? req.query.slug.join('/')
+    : (req.query.slug || '');
 
-export default async function handler(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const endpoint = url.pathname.replace(/^\/api\//, '');
-  const search = url.search;
+  const params = new URLSearchParams();
+  for (const [key, val] of Object.entries(req.query)) {
+    if (key !== 'slug') {
+      params.set(key, val as string);
+    }
+  }
 
-  const upstream = `https://api.ytify.workers.dev/${endpoint}${search}`;
+  const qs = params.toString();
+  const url = `https://api.ytify.workers.dev/${slug}${qs ? `?${qs}` : ''}`;
 
   try {
-    const response = await fetch(upstream, {
-      headers: { 'User-Agent': 'Applify/1.0' }
-    });
-
-    const data = await response.text();
-
-    return new Response(data, {
-      status: response.status,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 's-maxage=3600, stale-while-revalidate=600',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Proxy error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const upstream = await fetch(url);
+    const data = await upstream.json();
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=600');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(upstream.status).json(data);
+  } catch {
+    res.status(500).json({ error: 'Proxy failed' });
   }
 }
