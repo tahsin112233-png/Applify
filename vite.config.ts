@@ -1,5 +1,4 @@
 import { defineConfig, PluginOption } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
 import solidPlugin from 'vite-plugin-solid';
 import autoprefixer from 'autoprefixer';
 import postcssJitProps from 'postcss-jit-props';
@@ -7,7 +6,6 @@ import OpenProps from 'open-props';
 import { resolve } from 'path';
 import { readdirSync } from 'fs';
 import path from 'path';
-
 
 export default defineConfig(({ command }) => ({
   base: process.env.VITE_BASE_PATH || '/',
@@ -28,71 +26,6 @@ export default defineConfig(({ command }) => ({
     solidPlugin(),
     injectEruda(command === 'serve'),
     apiMiddleware(command === 'serve'),
-    VitePWA({
-      manifest: {
-        "short_name": "Applify",
-        "name": "Applify — Beautiful Music",
-        "description": "Stream YouTube audio with a beautiful Apple Music-inspired interface. Free, fast, and works in your browser.",
-        "icons": [
-          {
-            "src": "logo192.png",
-            "type": "image/png",
-            "sizes": "192x192",
-            "purpose": "any maskable"
-          },
-          {
-            "src": "logo512.png",
-            "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "any maskable"
-          },
-          {
-            "src": "monochrome.png",
-            "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "monochrome"
-          },
-          {
-            "src": "logo512.png",
-            "type": "image/png",
-            "sizes": "44x44",
-            "purpose": "any"
-          }
-        ],
-        "shortcuts": [
-          {
-            "name": "History",
-            "url": "/?collection=history",
-            "icons": [{ "src": "memories-fill.png", "sizes": "192x192" }]
-          },
-          {
-            "name": "Favorites",
-            "url": "/?collection=favorites",
-            "icons": [{ "src": "heart-fill.png", "sizes": "192x192" }]
-          },
-          {
-            "name": "Listen Later",
-            "url": "/?collection=listenLater",
-            "icons": [{ "src": "calendar-schedule-fill.png", "sizes": "192x192" }]
-          }
-        ],
-        "start_url": "/",
-        "display": "standalone",
-        "theme_color": "#000000",
-        "background_color": "#000000",
-        "share_target": {
-          "action": "/",
-          "method": "GET",
-          "params": {
-            "title": "title",
-            "text": "text",
-            "url": "url"
-          }
-        }
-      },
-      disable: true,
-      includeAssets: ['*.woff2', 'ytify_banner.webp']
-    })
   ],
   css: {
     postcss: {
