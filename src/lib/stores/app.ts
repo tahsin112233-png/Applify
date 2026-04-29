@@ -22,7 +22,6 @@ const storeInit: {
 
 export const [store, setStore] = createStore(storeInit);
 
-
 export function t(key: TranslationKeys, value: string = ''): string {
   const translations = store.translations as Record<TranslationKeys, string>;
   const translatedString = translations[key] || key as string;
