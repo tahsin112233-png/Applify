@@ -90,7 +90,7 @@ export default defineConfig(({ command }) => ({
           }
         }
       },
-      disable: command !== 'build',
+      disable: true,
       includeAssets: ['*.woff2', 'ytify_banner.webp']
     })
   ],
