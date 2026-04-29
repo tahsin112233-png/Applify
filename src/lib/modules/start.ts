@@ -1,4 +1,4 @@
-import { params, setNavStore, setStore, setPlayerStore, getList, setSearchStore, playerStore, t } from '@stores';
+import { params, setNavStore, setPlayerStore, getList, setSearchStore, playerStore } from '@stores';
 import { config, getDownloadLink, idFromURL, fetchCollection, player, setConfig, cleanseLibraryData, drawer } from '@utils';
 
 
@@ -20,8 +20,6 @@ export default async function() {
   }
 
   const { shareAction } = config;
-
-
 
   const collection = params.get('collection');
   const shared = params.get('si');
@@ -49,17 +47,14 @@ export default async function() {
     setNavStore('search', 'state', true);
   }
 
-
   const isPWA = idFromURL(params.get('url') || params.get('text'));
   const id = params.get('s') || isPWA;
-
 
   if (id) {
 
     if (isPWA && shareAction === 'watch') {
       setPlayerStore('stream', 'id', id);
       setPlayerStore('isWatching', true);
-
 
     } else if (isPWA && shareAction === 'download') {
       getDownloadLink(id);
@@ -75,8 +70,6 @@ export default async function() {
     }
 
   }
-
-
 
   document.addEventListener('click', (e) => {
     const click = e.target as HTMLElement;
